@@ -132,6 +132,9 @@ public class StateModel {
      * Description of all future states.
      */
     FutureStates[] futureStates;
+    
+    /** The shooter head speed. */
+    protected float shooterHeadSpeed;
 
     /**
      * State model is a singleton.
@@ -236,7 +239,7 @@ public class StateModel {
     public void runBelt(boolean belt) throws CANTimeoutException {
         if (beltDrive != null) {
             if (belt) {
-                beltDrive.setX(-0.5);
+                beltDrive.setX(-0.75);
             } else {
                 beltDrive.setX(0);
             }
@@ -264,9 +267,19 @@ public class StateModel {
     public void shoot(boolean shoot) throws CANTimeoutException {
         if (shootDrive != null) {
             if (shoot) {
+                  shootDrive.setX(-0.40);
+               try {
+                    Thread.sleep(700);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
                 meteringDrive.set(Relay.Value.kReverse);
-                shootDrive.setX(-0.25);
-            } else {
+               try {
+                    Thread.sleep(800);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+           } else {
                 shootDrive.setX(0);
             }
         }
